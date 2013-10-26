@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<smile version="1.0" id="Network1" numsamples="1000" discsamples="10000">
+	<nodes>
+		<cpt id="AIS_Turned_Off">
+			<state id="AISoff" />
+			<state id="AISon" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="AIS_Alert">
+			<state id="AISAlert" />
+			<state id="NoAISAlert" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="pLeavingTSS">
+			<state id="Leaving" />
+			<state id="NotLeaving" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Class_Atypical_Features">
+			<state id="Abnormal" />
+			<state id="Normal" />
+			<probabilities>0.5 0.5</probabilities>
+			<property id="DSL_OUTCOME_ORDER">-1</property>
+		</cpt>
+		<cpt id="Intent_Intrusion_ROI">
+			<state id="Intrusion" />
+			<state id="NoIntrusion" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Traffic_Rule_Violation">
+			<state id="Violation" />
+			<state id="NoViolation" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Unexpected_Stop">
+			<state id="Stopped" />
+			<state id="Moving" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<noisymax id="Suspiciousness_Level">
+			<state id="Suspicious" />
+			<state id="NotSuspicious" />
+			<parents>pLeavingTSS AIS_Turned_Off Class_Atypical_Features Intent_Intrusion_ROI Unexpected_Stop</parents>
+			<strengths>0 1 0 1 0 1 0 1 0 1</strengths>
+			<parameters>0.8 0.2 0 1 1 0 0 1 0.7 0.3 0 1 1 0 0 1 0.8 0.2 0 1 0 1</parameters>
+		</noisymax>
+		<noisymax id="Alert">
+			<state id="Alert" />
+			<state id="NoAlert" />
+			<parents>Traffic_Rule_Violation AIS_Alert</parents>
+			<strengths>0 1 0 1</strengths>
+			<parameters>1 0 0 1 1 0 0 1 0 1</parameters>
+		</noisymax>
+		<cpt id="Notify_Operator">
+			<state id="Notify" />
+			<state id="NoNotify" />
+			<parents>Suspiciousness_Level Alert</parents>
+			<probabilities>1 0 1 0 1 0 0 1</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 2.0.4815.1" name="Network1" faultnameformat="nodestate">
+			<node id="pLeavingTSS">
+				<name>Leaving TSS</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>395 65 486 118</position>
+				<barchart active="true" />
+			</node>
+			<node id="AIS_Alert">
+				<name>AIS Alert</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>803 123 888 178</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="AIS_Turned_Off">
+				<name>AIS Turned Off</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>55 242 139 294</position>
+				<barchart active="true" />
+			</node>
+			<node id="Suspiciousness_Level">
+				<name>Suspiciousness Level</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>324 327 435 396</position>
+				<barchart active="true" />
+			</node>
+			<node id="Class_Atypical_Features">
+				<name>Class Atypical Features</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>119 129 209 185</position>
+				<barchart active="true" />
+			</node>
+			<node id="Traffic_Rule_Violation">
+				<name>Traffic Rule Violation</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>651 101 747 163</position>
+				<barchart active="true" />
+			</node>
+			<node id="Intent_Intrusion_ROI">
+				<name>Intent Intrusion ROI</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>470 165 571 228</position>
+				<barchart active="true" />
+			</node>
+			<node id="Alert">
+				<name>Alert</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>710 262 797 318</position>
+				<barchart active="true" />
+			</node>
+			<node id="Notify_Operator">
+				<name>Notify Operator</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>567 444 653 497</position>
+				<barchart active="true" />
+			</node>
+			<node id="Unexpected_Stop">
+				<name>Unexpected Stop</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="7" />
+				<position>247 61 340 119</position>
+				<barchart active="true" />
+			</node>
+		</genie>
+	</extensions>
+</smile>
