@@ -37,6 +37,11 @@ public class Hypotheses {
         //This routine updates the hypothesis
         
         aisOff = checkAISoff();
+        classAtypical = checkAtypical();
+        intentIntrusionROI = checkIntentIntrusionROI();
+        leavingTSS = checkLeavingTSS();
+        uTurn = checkUTurn();
+        unexpectedStop= checkUnexpectedStop();
     }
     
     Double checkAISoff(){
@@ -54,7 +59,8 @@ public class Hypotheses {
             
             if  (lastReport.navigationStatus != 5){
                 Interval timeDiff = new Interval(lastReport.timestamp, parentVessel.parentOP.clock);
-                Integer timeThreshold = parentVessel.parentOP.theOptions.slidingWindowSize + parentVessel.parentOP.theOptions.stepTime;
+                Integer timeThreshold = parentVessel.parentOP.theOptions.slidingWindowSize + 
+                        parentVessel.parentOP.theOptions.stepTime;
 
                 if (timeDiff.toDuration().getStandardSeconds() > timeThreshold){
                     NormalDistribution theDist = new NormalDistribution(timeThreshold,timeThreshold);
@@ -81,6 +87,52 @@ public class Hypotheses {
         
         
         
+        return retVal;
+    }
+
+    Double checkIntentIntrusionROI(){
+        Double retVal = 0d;
+        
+        //Get ROI's
+        
+        //Calculate CPA's for areas that are nearby
+        
+        //Determine probability
+        
+        return retVal;
+    }
+    
+    Double checkLeavingTSS(){
+        Double retVal = 0d;
+        
+        //Get TSS definitions
+       
+        //Determine if in TSS
+        
+        //Determine probability of leaving using the three indicators
+        
+        return retVal;
+    }
+    
+    Double checkUTurn(){
+        Double retVal = 0d;
+        
+        //Sum course change over the measuring window
+        
+        //Determine probability of U-Turn based on total course change
+        
+        return retVal;
+    }
+    
+    Double checkUnexpectedStop(){
+        Double retVal = 0d;
+        Double speedThreshold = 0.1d;//threshold for determining a vessel has stopped (kts)
+        //Determine if stopped
+        if (parentVessel.theFeatures.speed < 0.1d){
+            //Determine if at location where ships stop (based on all vessel and own class data)
+        
+            //Calculate probability of stop being unexpected
+        }
         return retVal;
     }
 }
