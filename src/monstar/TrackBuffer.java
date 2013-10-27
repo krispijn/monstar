@@ -90,4 +90,14 @@ public class TrackBuffer {
     Boolean isEmpty(){
         return positionReports.isEmpty();
     }
+    
+    List<PositionReport> getPositionReportsInWindow(DateTime startTime, DateTime endTime){
+        List<PositionReport> theList = new ArrayList<PositionReport>();
+        for (PositionReport p : positionReports){
+            if (p.timestamp.isBefore(endTime) && p.timestamp.isAfter(startTime) ){
+                theList.add(p);
+            }
+        }    
+        return theList;
+    }
 }

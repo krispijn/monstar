@@ -66,6 +66,7 @@ public class Vessel {
     void evaluateBehavior() throws Exception {
         theFeatures.update();
         theHypotheses.update();
+        theAlerts.update();
         theSuspiciousness.update();
     }
     

@@ -59,15 +59,10 @@ public class Features {
         Integer stepTime = parentVessel.parentOP.theOptions.stepTime;
         
         // 1. we select the reports that belong to the current window and previous one
-        for (PositionReport p : parentVessel.theTrackBuffer.positionReports){
-            if (p.timestamp.isBefore(zeTime) && p.timestamp.isAfter(zeTime.minusSeconds(windowSize))){
-                t.add(p);
-            }
-            if (p.timestamp.isBefore(zeTime.minusSeconds(stepTime)) && 
-                    p.timestamp.isAfter(zeTime.minusSeconds(stepTime+windowSize))){
-                tMinOne.add(p);
-            }
-        }
+        t = parentVessel.theTrackBuffer.getPositionReportsInWindow(zeTime.minusSeconds(windowSize), zeTime);
+        tMinOne = parentVessel.theTrackBuffer.getPositionReportsInWindow(zeTime.minusSeconds(windowSize+stepTime), 
+                zeTime.minusSeconds(stepTime) );
+
         // 2. Calculate mean values for each window
         Double t_course = 0d;
         Double tMinOne_course = 0d;
