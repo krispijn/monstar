@@ -7,10 +7,14 @@ import java.sql.Statement;
 import org.joda.time.Interval;
 import org.apache.commons.math3.distribution.NormalDistribution;
 /**
- *
- * @author Krispijn
+ * This class contains the probabilities of the hypotheses considered by
+ * the system for a vessel. For a detailed explanation of these hypotheses
+ * please have a look at Section 5-3 of the thesis.
+ * 
+ * @author Krispijn Scholte
  */
 public class Hypotheses {
+    
     Double aisOff;
     Double classAtypical;
     Double intentIntrusionROI;
@@ -53,14 +57,16 @@ public class Hypotheses {
     }
     
     Double checkAISoff(){
-        // Routine to check if the AIS might have been turned off intentionally
-        Double probability = 0d;
+        // Routine to check if the AIS might have been turned off intentionally.
+        // See Section 5-3-1 for more details.
         
-        // get last position report. If within window, then no problem, if not: 
-        // slowly increase probability IF last nav status was not moored (5)
+        Double retVal = 0d;
+        
+        // Get last position report. If within window, then no problem, if not: 
+        // slowly increase probability IF last nav status was not moored (5).
         
         
-        // test if we should test for this. Note that here, the criteria (such as stopping near known stop locations form
+        // Test if we should test for this. Note that here, the criteria (such as stopping near known stop locations from
         // a database, can be implemented.
         if (!parentVessel.theTrackBuffer.isEmpty()){
             PositionReport lastReport = parentVessel.theTrackBuffer.getLatestPositionReport();
@@ -75,23 +81,27 @@ public class Hypotheses {
 
                     // get the value of the probability under the normal distribution. Note that we need to multiply this
                     // by 2 as we use only one half of the curve.
-                    probability = 2*(theDist.cumulativeProbability(timeDiff.toDuration().getStandardSeconds())-0.5); 
+                    retVal = 2*(theDist.cumulativeProbability(timeDiff.toDuration().getStandardSeconds())-0.5); 
                 }
             }
         }
         
         if (parentVessel.parentOP.theOptions.intermediateEvents && 
-                probability > parentVessel.parentOP.theOptions.notificationThreshold){
+                retVal > parentVessel.parentOP.theOptions.notificationThreshold){
                 //Log this event if it goes over the threshold
                 Event newEvent = new Event(parentVessel);
                 newEvent.type = "HYPOTHESIS";
-                newEvent.description = "AIS Off: "+ probability.toString() + "(> " + parentVessel.parentOP.theOptions.notificationThreshold.toString() + ")" ;
+                newEvent.description = "AIS Off: "+ retVal.toString() + "(> " + parentVessel.parentOP.theOptions.notificationThreshold.toString() + ")" ;
         }
         
-        return probability;
+        return retVal;
     }
     
     Double checkAtypical() {
+        // This function determines the probability of the vessel acting different 
+        // from the (historical) norm. See section 5-3-3 of the thesis  for more 
+        // information on this.
+        
         Double retVal = 0d;
         Double normalCourse, normalSpeed, normalCourseVariance, normalSpeedVariance;
         Double allShippingDensity, classShippingDensity;  
@@ -180,12 +190,15 @@ public class Hypotheses {
     }
     
     Double checkUnexpectedStop(){
+        // Check for the unexpected stopping of a vessels. For more details, see 
+        // thesis Section 5-3-4.
         Double retVal = 0d;
         Double speedThreshold = 0.1d;//threshold for determining a vessel has stopped (kts)
+        Double unkValue = .5d;
         Boolean classSpecific = false;
         
         //Determine if stopped
-        if (parentVessel.theFeatures.speed < 0.1d){
+        if (parentVessel.theFeatures.speed < speedThreshold){
             //Determine if at location where ships stop (based on all vessel and own class data)
             String classString = MonstarUtility.getClassString(parentVessel.shiptype);
             Integer dataType = checkGISDBdata(classString);
@@ -206,7 +219,7 @@ public class Hypotheses {
                 
             }
             else {
-                retVal = .5d;
+                retVal = unkValue;
             }
         }
         
@@ -222,6 +235,8 @@ public class Hypotheses {
     }
     
     Double getValueFromGISDB(String classString, Integer valueType, Boolean classSpecific){
+        //This function fetches certain values from the GIS db based on the vessels current
+        //location
         Double retVal = 0d;
         String tableName;
         
@@ -304,8 +319,9 @@ public class Hypotheses {
     
     Integer checkGISDBdata(String classString){
         // This routine check if the data in the GIS db is valid; in other words: what do we have at 
-        // the vessel's current location?
-        // returns 0 = no info; 1 = global info only; 2 = class specific info
+        // the vessel's current location? This is determined from the shipping density values.
+        
+        // returns 0 = no info; 1 = class non-specific info only; 2 = class specific info
         
         Integer retVal = 0;
         Double allShippingDensity, classShippingDensity;
@@ -321,6 +337,7 @@ public class Hypotheses {
                 classShippingDensity = getValueFromGISDB(classString,5,true);
 
                 if ( classShippingDensity > 1e-16){
+                    //this means we have class specific info
                     retVal = 2;
                 }
             }

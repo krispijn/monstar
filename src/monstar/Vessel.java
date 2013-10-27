@@ -11,8 +11,10 @@ import org.joda.time.DateTime;
 import smile.*;
 
 /**
- *
- * @author Krispijn
+ * This class describes a vessel. All vessels are part of the Operational
+ * Picture. For more information, please see Chapter 6 of the thesis.
+ * 
+ * @author Krispijn Scholte
  */
 public class Vessel {
     String callsign;
@@ -24,7 +26,8 @@ public class Vessel {
     String name;
     Integer shiptype;
     Integer width;
-            
+
+    //related classes
     TrackBuffer theTrackBuffer;
     Alerts theAlerts;
     Hypotheses theHypotheses;
@@ -72,7 +75,9 @@ public class Vessel {
         theSuspiciousness.update();
     }
     
-    void updateFromDB() throws Exception {                
+    void updateFromDB() throws Exception {
+        // This function find the extended details of a vessel and updates this 
+        // object accordingly.
         Class.forName("com.mysql.jdbc.Driver");
        
         Connection con = DriverManager.getConnection(parentOP.theOptions.dbAISURL,

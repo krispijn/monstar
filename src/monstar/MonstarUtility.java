@@ -1,19 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package monstar;
 
 /**
- *
- * @author krispy
+ * This is a utility class that has miscellaneous functions used throughout 
+ * the program.
+ * 
+ * @author Krispijn Scholte
  */
 class MonstarUtility {
-
     
     public static String getClassString (Integer classID){
+        // Returns a string representation of a shiptype id. For more info on this
+        // please see thesis Section 6-2-2.
         String theClass = "cNonTrending";
         switch(classID){
             case 0:

@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package monstar;
 
 import org.joda.time.Duration;
 /**
- *
- * @author Krispijn
+ * This class contains 'global' options. They belong to the Operational Picture
+ * of which there is only one in the program.
+ * 
+ * @author Krispijn Scholte
  */
 public class Options {
     Integer stepTime; //seconds

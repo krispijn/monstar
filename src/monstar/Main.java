@@ -8,7 +8,7 @@ import org.joda.time.*;
  * MONitoring Ship Traffic At Range - an application for finding suspicious behavior
  * in marine vessel traffic.
  * 
- * @author Krispijn
+ * @author Krispijn Scholte
  */
 public class Main {
 
@@ -23,13 +23,12 @@ public class Main {
         Scenario scen;
         Boolean onlineMode;
         
-        onlineMode = true; // online mode uses system time to pull almost live data from the data base.
-        
+        onlineMode = false; // online mode uses system time to pull almost live data from the data base.        
         
         OP = new OperationalPicture();
         
         if (!onlineMode) {
-            scen = setScenario(OP,2);        
+            scen = setScenario(OP,1);        
         
             loopTime = scen.startTime;
             stepTime = 30; //in seconds
@@ -55,7 +54,9 @@ public class Main {
             }
         }
         else {
-            //online mode
+            //online mode. Here we process the 'live' data using the logging 
+            //database. Note that you'll need the program that takes the AIS
+            //messages and puts them in the database in the first place.
             loopTime = DateTime.now();
             stepTime = 30; //in seconds
 

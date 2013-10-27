@@ -5,7 +5,10 @@ import java.text.*;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 /**
- *
+ * This class hold a limited number of position reports (track points) of a 
+ * vessel. It also provides a number of routines for accessing track data. For
+ * more information, please see Section 6-2-1 par. 1 of the thesis.
+ * 
  * @author Krispijn
  */
 public class TrackBuffer {
@@ -30,8 +33,11 @@ public class TrackBuffer {
     }
     
     PositionReport addPoint(DateTime timestamp){
-        //Check if timestamp is already existing for this report
+        //Add a point to the buffer.
         
+        //Check if timestamp is already existing for this report. Note that 
+        //combinations of mmsi <-> timestamp are unique. As every track buffer
+        //is assigned to a singular vessel, we need only check the timestamp.
         Iterator it = positionReports.iterator();
         
         while(it.hasNext()){
@@ -78,6 +84,7 @@ public class TrackBuffer {
     }
     
     void cleanBuffer(Duration trackHist) {
+        //This removes all position reports older than the specified track history time.
         DateTime testTime = parentVessel.parentOP.clock.minus(trackHist);
         
         for (ListIterator<PositionReport> p = positionReports.listIterator(positionReports.size()); p.hasPrevious();) {
@@ -88,10 +95,12 @@ public class TrackBuffer {
     }
     
     Boolean isEmpty(){
+        //just to make it shorter (why are you even reading this bit of the code?)
         return positionReports.isEmpty();
     }
     
     List<PositionReport> getPositionReportsInWindow(DateTime startTime, DateTime endTime){
+        // This function returns all position reports within a certain interval specified.
         List<PositionReport> theList = new ArrayList<PositionReport>();
         for (PositionReport p : positionReports){
             if (p.timestamp.isBefore(endTime) && p.timestamp.isAfter(startTime) ){

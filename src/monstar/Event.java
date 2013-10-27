@@ -3,8 +3,10 @@ package monstar;
 import org.joda.time.DateTime;
 
 /**
- *
- * @author krispy
+ * This class models events generated in the system that are related to a
+ * certain vessel.
+ * 
+ * @author Krispijn Scholte
  */
 public class Event {
     DateTime time;

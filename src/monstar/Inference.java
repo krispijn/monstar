@@ -8,8 +8,11 @@ package monstar;
 import java.net.URL;
 import smile.*;
 /**
- *
- * @author Krispijn
+ * This class contains the Bayes network that reasons about the hypotheses and
+ * determines the 'suspiciousness' level. For a more detailed explanation, 
+ * please see Section 5-4 of the thesis.
+ * 
+ * @author Krispijn Scholte
  */
 public class Inference {
     Network theNetwork;

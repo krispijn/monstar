@@ -5,8 +5,11 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 /**
- *
- * @author Krispijn
+ * This class contains the actual (most recent) features of the vessel it is 
+ * attached to. For more information on the features and how these are derived,
+ * please see Section 5-2 of the thesis.
+ * 
+ * @author Krispijn Scholte
  */
 public class Features {
     Double course;
@@ -34,7 +37,8 @@ public class Features {
         deltaSpeed = 0d;
         lat = 0d;
         lon = 0d;
-        navState = 15; //default; not defined
+        navState = 15;  //default; not defined. See also:
+                        //http://gpsd.berlios.de/AIVDM.html Table 5.
     }
     
     void update(){

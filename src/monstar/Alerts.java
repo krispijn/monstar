@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- *
- * @author Krispijn
+ * This class contains the values of Alert parameters of a vessel. For more 
+ * information on these alerts, please see Section 5-4 of the thesis.
+ * 
+ * @author Krispijn Scholte
  */
 public class Alerts {
     Boolean aisAlert;

@@ -23,8 +23,11 @@ import java.util.Set;
 import org.joda.time.DateTime;
 
 /**
- *
- * @author Krispijn
+ * This class is the Operational Picture. It contains all vessels detected and
+ * keeps track of global options and timing (as this program functions via a
+ * polling mechanism).
+ * 
+ * @author Krispijn Scholte
  */
 public class OperationalPicture {
     List<Vessel> theVessels;
@@ -38,19 +41,18 @@ public class OperationalPicture {
     
             
     void update(DateTime time) throws Exception {
-        /** 
-         * STEPS
-         * 1. Fetch incoming Data
-         * 2. Evaluate Behavior per vessel (detect features, calculated hypotheses, trigger inference)
-         * 3. Determine if alert should be generated for vessel
-         */
         clock = time;
-        
+        // STEPS
+         
+        //1. Fetch incoming Data
         getNewMessages(time);        
         
         if (!theVessels.isEmpty()){
             for (Vessel v: theVessels){
+                // 2. Evaluate Behavior per vessel (detect features, calculated hypotheses, trigger inference)
                 v.evaluateBehavior();
+                
+                // 3. Determine if alert should be generated for vessel
                 if (v.theSuspiciousness.notifyOperator > theOptions.notificationThreshold){
                     Event newEvent = new Event(v);
                     newEvent.type = "OPERATOR_NOTIFICATION";
@@ -59,18 +61,22 @@ public class OperationalPicture {
                 }
             }
         }
-        
+        // if specified, dump relevant data to text file (e.g. for analysis and pretty plots)
         if (theOptions.logToFile) DumpStateToFile(theOptions.logFileName);    
     }
     
     void getNewMessages(DateTime loopTime) throws Exception{
         //Clean up of buffers goes here! Because we don't want to itterate over the new messages as we know
-        //they are new! So first, we clean up
+        //they are new! 
+        
+        //1. First, we clean up.
         for (Vessel v: theVessels){
                 v.theTrackBuffer.cleanBuffer(theOptions.trackHistoryLength);
         }
         
+        //2. We fetch messages in our time window
         
+        //2.1 Setup a connection
         Class.forName("com.mysql.jdbc.Driver");
        
         Connection con = DriverManager.getConnection(theOptions.dbAISURL,theOptions.dbAISLogin,theOptions.dbAISPassword);
@@ -86,7 +92,7 @@ public class OperationalPicture {
         String maxTime = loopTime.toString("HH:mm:ss");
         
         String filter = "";
-        
+        //2.2 determine some filter settings for the query
         if (theOptions.filterVessel) {
             filter = " WHERE mmsi=" + theOptions.filterMMSI.toString()
                     + " AND TIMESTAMPDIFF(SECOND, TIMESTAMP(date,time),'" + minDate + " " + minTime + "') <= 0"
@@ -99,6 +105,7 @@ public class OperationalPicture {
                     + ";";
         } 
     
+        //2.3 fetch messages
         ResultSet newMessages = stmtIncomingMessages.executeQuery(qryMessages + filter);
         
         noMessages = 0;
@@ -111,6 +118,7 @@ public class OperationalPicture {
         catch(Exception ex){
             return;
         }
+        //3. Process the messages into position reports
         if (noMessages > 0) {
             do {
                 DateTime timeStamp;
@@ -138,6 +146,8 @@ public class OperationalPicture {
 
             } while(newMessages.next());
         }
+        
+        //4. close and cleanup
         newMessages.close();
         stmtIncomingMessages.close();
         con.close(); 
@@ -145,6 +155,9 @@ public class OperationalPicture {
     }
     
     Vessel addVessel(Integer theMMSI, List<Vessel> theList){
+        //This routine add a vessel to the operational picture. It returns the
+        //vessel created. If the vessel already exists, the existing vessel
+        //will be returned.
         Vessel theNewOne = new Vessel(this);
         theNewOne.mmsi = theMMSI;
         
@@ -173,7 +186,8 @@ public class OperationalPicture {
     }
     
     DateTime parseDBDateTime(String Date, String Time){
-        // expected format: yyyy-MM-dd ; HH:mm:ss
+        // Parses the date time fields from the AIS database.
+        // The expected format: yyyy-MM-dd ; HH:mm:ss
         Integer year,month,day,hour,minute,second;
         
         year = Integer.parseInt(Date.substring(0,4));
@@ -187,7 +201,7 @@ public class OperationalPicture {
     }
     
     void DumpStateToFile(String fileName) throws Exception {
-        //this routine dumps all vessel info to a text file for analysis
+        // This routine dumps all vessel info to a text file for analysis
         // check if file is there. If not -> create with header.
         Boolean writeHeader = false;
         if (!(new File(fileName).exists())){
@@ -214,7 +228,7 @@ public class OperationalPicture {
     }
     
     String getFeatureState(Vessel v) {
-    //returns a string with it's states
+    //returns a string with the vessel state
     String message = "";
 
     //FEATURES
