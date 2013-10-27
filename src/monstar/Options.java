@@ -16,11 +16,16 @@ public class Options {
     Integer slidingWindowSize; //seconds
     Duration trackHistoryLength;
     
-    String dbURL;
-    String dbName;
-    String dbTableName;
-    String dbLogin;
-    String dbPassword;
+    String dbAISURL;
+    String dbAISName;
+    String dbAISTableName;
+    String dbAISLogin;
+    String dbAISPassword;
+    
+    String dbGISURL;
+    String dbGISName;
+    String dbGISLogin;
+    String dbGISPassword;
     
     Double notificationThreshold;
     
@@ -34,11 +39,18 @@ public class Options {
         stepTime = 30;
         slidingWindowSize = 120;
         
-        dbURL = "jdbc:mysql://localhost:3306/log_ais?zeroDateTimeBehavior=convertToNull";
-        dbName = "log_ais";
-        dbTableName = "position_report_cleaned";
-        dbLogin = "root";
-        dbPassword = "Wortel123";
+        //set options for AIS log database 
+        dbAISURL = "jdbc:mysql://localhost:3306/log_ais?zeroDateTimeBehavior=convertToNull";
+        dbAISName = "log_ais";
+        dbAISTableName = "position_report_cleaned";
+        dbAISLogin = "root";
+        dbAISPassword = "Wortel123";
+        
+        //set options for GIS (geospatial) database
+        dbGISURL = "jdbc:postgresql://localhost:5432/monstar";
+        dbGISName = "monstar";
+        dbGISLogin = "postgres";
+        dbGISPassword = "Wortel123";
         
         notificationThreshold = 0.8; // must be between 0-1
         

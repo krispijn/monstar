@@ -72,11 +72,11 @@ public class OperationalPicture {
         
         Class.forName("com.mysql.jdbc.Driver");
        
-        Connection con = DriverManager.getConnection(theOptions.dbURL,theOptions.dbLogin,theOptions.dbPassword);
+        Connection con = DriverManager.getConnection(theOptions.dbAISURL,theOptions.dbAISLogin,theOptions.dbAISPassword);
         Statement stmtIncomingMessages = con.createStatement();
         
         Integer noMessages;
-        String qryMessages = "SELECT * FROM `" + theOptions.dbName + "`.`" + theOptions.dbTableName + "`";
+        String qryMessages = "SELECT * FROM `" + theOptions.dbAISName + "`.`" + theOptions.dbAISTableName + "`";
         
         String minDate = loopTime.minusSeconds(theOptions.stepTime).toString("yyyy-MM-dd");
         String maxDate = loopTime.toString("yyyy-MM-dd");

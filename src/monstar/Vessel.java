@@ -72,13 +72,13 @@ public class Vessel {
     void updateFromDB() throws Exception {                
         Class.forName("com.mysql.jdbc.Driver");
        
-        Connection con = DriverManager.getConnection(parentOP.theOptions.dbURL,
-                parentOP.theOptions.dbLogin,
-                parentOP.theOptions.dbPassword);
+        Connection con = DriverManager.getConnection(parentOP.theOptions.dbAISURL,
+                parentOP.theOptions.dbAISLogin,
+                parentOP.theOptions.dbAISPassword);
         Statement stmtIncomingMessages = con.createStatement();
         
         Integer noMessages = 0;
-        String qryMessages = "SELECT * FROM `" + parentOP.theOptions.dbName + "`.`vessel`";
+        String qryMessages = "SELECT * FROM `" + parentOP.theOptions.dbAISName + "`.`vessel`";
         
         String filter = " WHERE mmsi=" + this.mmsi.toString() + ";";
             
