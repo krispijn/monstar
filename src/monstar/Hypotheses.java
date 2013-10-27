@@ -80,6 +80,13 @@ public class Hypotheses {
             }
         }
         
+        if (parentVessel.parentOP.theOptions.intermediateEvents && 
+                probability > parentVessel.parentOP.theOptions.notificationThreshold){
+                //Log this event if it goes over the threshold
+                Event newEvent = new Event(parentVessel);
+                newEvent.type = "HYPOTHESIS";
+                newEvent.description = "AIS Off: "+ probability.toString() + "(> " + parentVessel.parentOP.theOptions.notificationThreshold.toString() + ")" ;
+        }
         
         return probability;
     }
@@ -125,6 +132,14 @@ public class Hypotheses {
             
             //Determine probabilities; select the maximum.
             retVal = Math.max(pCourse, pSpeed);
+        }
+        
+        if (parentVessel.parentOP.theOptions.intermediateEvents && 
+                retVal > parentVessel.parentOP.theOptions.notificationThreshold){
+                //Log this event if it goes over the threshold
+                Event newEvent = new Event(parentVessel);
+                newEvent.type = "HYPOTHESIS";
+                newEvent.description = "Class Atypical : "+ retVal.toString() + "(> " + parentVessel.parentOP.theOptions.notificationThreshold.toString() + ")" ;
         }
         
         return retVal;
@@ -194,6 +209,15 @@ public class Hypotheses {
                 retVal = .5d;
             }
         }
+        
+        if (parentVessel.parentOP.theOptions.intermediateEvents && 
+                retVal > parentVessel.parentOP.theOptions.notificationThreshold){
+                //Log this event if it goes over the threshold
+                Event newEvent = new Event(parentVessel);
+                newEvent.type = "HYPOTHESIS";
+                newEvent.description = "Unexpected Stop : "+ retVal.toString() + "(> " + parentVessel.parentOP.theOptions.notificationThreshold.toString() + ")" ;
+        }
+        
         return retVal;
     }
     

@@ -52,9 +52,10 @@ public class OperationalPicture {
             for (Vessel v: theVessels){
                 v.evaluateBehavior();
                 if (v.theSuspiciousness.notifyOperator > theOptions.notificationThreshold){
-                    // NOTIFICATION CODE GOES HERE!
-                    //System.out.println(time.toString() + " Alert for: " + v.mmsi.toString() + 
-                    //        " - notifyLevel:" + v.theSuspiciousness.notifyOperator.toString() );
+                    Event newEvent = new Event(v);
+                    newEvent.type = "OPERATOR_NOTIFICATION";
+                    newEvent.description = "Suspiciousness: " + v.theSuspiciousness.notifyOperator.toString() 
+                            + "(> " + theOptions.notificationThreshold.toString() + ")" ;
                 }
             }
         }

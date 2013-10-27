@@ -30,8 +30,9 @@ public class Vessel {
     Hypotheses theHypotheses;
     Suspiciousness theSuspiciousness;
     Features theFeatures;
-    Set<CPA> theCPAs;
+    List<CPA> theCPAs;
     Inference theInference;
+    List<Event> theEvents;
     
     OperationalPicture parentOP;
     
@@ -61,6 +62,7 @@ public class Vessel {
         theSuspiciousness = new Suspiciousness(this);
         theFeatures = new Features(this);
         theInference= new Inference(this);
+        theEvents = new ArrayList<>();
     }
     
     void evaluateBehavior() throws Exception {

@@ -35,6 +35,8 @@ public class Options {
     Boolean filterVessel;
     Integer filterMMSI;
     
+    Boolean intermediateEvents; //create event objects for stuff other than ais alerts and notifications
+    
     Options(){
         stepTime = 30;
         slidingWindowSize = 120;
@@ -61,5 +63,7 @@ public class Options {
         
         filterVessel = false;
         filterMMSI = 0;
+        
+        intermediateEvents = true;
     }
 }

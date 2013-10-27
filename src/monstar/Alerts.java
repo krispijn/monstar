@@ -36,6 +36,18 @@ public class Alerts {
         for (PositionReport p : theList){
             if (p.navigationStatus == 2 || p.navigationStatus == 6){
                 //ship is aground (6) or not-under-command (2)
+                String message = "Vessel status=";
+                if (p.navigationStatus == 2){
+                    message += "2: Not under command.";
+                }
+                else {
+                    message += "6: Aground.";    
+                }
+                
+                Event newEvent = new Event(parentVessel);
+                newEvent.type = "AIS_ALERT";
+                newEvent.description = message;
+                        
                 return true;
             }
         }

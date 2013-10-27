@@ -21,26 +21,61 @@ public class Main {
         OperationalPicture OP;
         Integer stepTime,vesselSelect,mmsi;
         Scenario scen;
-                        
+        Boolean onlineMode;
+        
+        onlineMode = true; // online mode uses system time to pull almost live data from the data base.
+        
+        
         OP = new OperationalPicture();
         
-        scen = setScenario(OP,1);
+        if (!onlineMode) {
+            scen = setScenario(OP,2);        
         
-        loopTime = scen.startTime;
-        stepTime = 30; //in seconds
+            loopTime = scen.startTime;
+            stepTime = 30; //in seconds
 
-        //Set these for logging to file of results
-        OP.theOptions.logToFile = true;
-        OP.theOptions.logFileName = scen.logFileName;
-        
-        while (loopTime.isBefore(scen.endTime)){
-                System.out.println("Looptime: " + loopTime.toString());
-                
-                OP.update(loopTime);
-                
-                loopTime = loopTime.plusSeconds(stepTime);
+            //Set these for logging to file of results
+            OP.theOptions.logToFile = false;
+            OP.theOptions.logFileName = scen.logFileName;
+
+            while (loopTime.isBefore(scen.endTime)){
+                    System.out.println("Looptime: " + loopTime.toString());
+                    OP.update(loopTime);
+                    loopTime = loopTime.plusSeconds(stepTime);
+            }
+
+            //output events
+            for (Vessel v : OP.theVessels){
+                for (Event e : v.theEvents){
+                    String message = v.name + ", " + v.mmsi.toString() + " - ";
+                    message += e.time.toString() + ": ";
+                    message += e.type + " - " + e.description;
+                    System.out.println( message );
+                }        
+            }
         }
+        else {
+            //online mode
+            loopTime = DateTime.now();
+            stepTime = 30; //in seconds
 
+            //Set these for logging to file of results
+            OP.theOptions.logToFile = false;
+
+            while (true) {
+                    System.out.println("Looptime: " + loopTime.toString());
+                    OP.update(loopTime);
+                    loopTime = loopTime.plusSeconds(stepTime);
+                    //wait for sufficient time to pass (stepTime is a minimum: if 
+                    //each update takes longer than stepTime, no time will be spend 
+                    //in this here waiting loop
+                    if (DateTime.now().isBefore(loopTime)){
+                        sleep( (new Duration(DateTime.now(),loopTime)).getMillis() ); //wait the difference
+                    }
+                        
+            }          
+            
+        }
     }
     
     public static class Scenario{
@@ -75,7 +110,7 @@ public class Main {
         
             default:
                 scen.logFileName = "MonSTAR_Log_AllFull.csv";
-                scen.startTime = new DateTime(2013,04,27,10,30,0); 
+                scen.startTime = new DateTime(2013,04,27,16,30,0); 
                 scen.endTime = new DateTime(2013,04,28,20,40,0); 
                 break;
         }
