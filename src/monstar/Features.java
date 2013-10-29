@@ -95,6 +95,20 @@ public class Features {
         if (deltaCourse.isNaN()) deltaCourse = 0d;
         if (deltaSpeed.isNaN()) deltaSpeed = 0d;
         
+        if (deltaCourse > parentVessel.parentOP.theOptions.courseChangeThreshold){
+            Event newEvent = new Event(parentVessel);
+            newEvent.type = "FEATURE_COURSE_CHANGE";
+            newEvent.value = deltaCourse;
+            newEvent.description = "Course change: "+ deltaCourse.toString();
+        }
+        if (deltaSpeed > parentVessel.parentOP.theOptions.speedChangeThreshold){
+            Event newEvent = new Event(parentVessel);
+            newEvent.type = "FEATURE_SPEED_CHANGE";
+            newEvent.value = deltaSpeed;
+            newEvent.description = "Speed change: "+ deltaSpeed.toString();
+        }
+            
+            
     }
     
 }

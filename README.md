@@ -1,6 +1,6 @@
 MonSTAR
 =======
-Monitoring Ship Traffic at Range: a prototype for monitoring vessels and detecting suspicious behavior.
+Monitoring Ship Traffic Automatically Remotely: a prototype for monitoring vessels and detecting suspicious behavior.
 
 Description
 -----------

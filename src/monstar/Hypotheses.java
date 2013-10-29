@@ -90,8 +90,9 @@ public class Hypotheses {
                 retVal > parentVessel.parentOP.theOptions.notificationThreshold){
                 //Log this event if it goes over the threshold
                 Event newEvent = new Event(parentVessel);
-                newEvent.type = "HYPOTHESIS";
-                newEvent.description = "AIS Off: "+ retVal.toString() + "(> " + parentVessel.parentOP.theOptions.notificationThreshold.toString() + ")" ;
+                newEvent.type = "HYPOTHESIS_AISOFF";
+                newEvent.value = retVal;
+                newEvent.description = "AIS Off: "+ retVal.toString();
         }
         
         return retVal;
@@ -148,8 +149,9 @@ public class Hypotheses {
                 retVal > parentVessel.parentOP.theOptions.notificationThreshold){
                 //Log this event if it goes over the threshold
                 Event newEvent = new Event(parentVessel);
-                newEvent.type = "HYPOTHESIS";
-                newEvent.description = "Class Atypical : "+ retVal.toString() + "(> " + parentVessel.parentOP.theOptions.notificationThreshold.toString() + ")" ;
+                newEvent.type = "HYPOTHESIS_CLASSATYPICAL";
+                newEvent.value = retVal;
+                newEvent.description = "Class Atypical : "+ retVal.toString();
         }
         
         return retVal;

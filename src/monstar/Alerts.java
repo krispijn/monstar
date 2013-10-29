@@ -47,7 +47,8 @@ public class Alerts {
                 }
                 
                 Event newEvent = new Event(parentVessel);
-                newEvent.type = "AIS_ALERT";
+                newEvent.type = "ALERT_AIS";
+                newEvent.value = 1d;
                 newEvent.description = message;
                         
                 return true;

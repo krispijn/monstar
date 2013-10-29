@@ -5,7 +5,7 @@ import org.joda.time.*;
         
         
 /**
- * MONitoring Ship Traffic At Range - an application for finding suspicious behavior
+ * MONitoring Ship Traffic Automatically Remotely - an application for finding suspicious behavior
  * in marine vessel traffic.
  * 
  * @author Krispijn Scholte

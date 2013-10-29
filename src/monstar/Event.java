@@ -12,6 +12,8 @@ public class Event {
     DateTime time;
     String type;
     String description;
+    Double value;
+    
     Vessel parentVessel;
     
     Event(Vessel parent){

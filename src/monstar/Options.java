@@ -24,6 +24,8 @@ public class Options {
     String dbGISPassword;
     
     Double notificationThreshold;
+    Double courseChangeThreshold;
+    Double speedChangeThreshold;
     
     Boolean logToFile;
     String logFileName;
@@ -51,6 +53,8 @@ public class Options {
         dbGISPassword = "Wortel123";
         
         notificationThreshold = 0.8; // must be between 0-1
+        courseChangeThreshold = 0.08; //deg/s
+        speedChangeThreshold = 0.01; //kts/s
         
         trackHistoryLength = new Duration(2*60*60*1000); //2 hours
         

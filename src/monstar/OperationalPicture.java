@@ -56,8 +56,8 @@ public class OperationalPicture {
                 if (v.theSuspiciousness.notifyOperator > theOptions.notificationThreshold){
                     Event newEvent = new Event(v);
                     newEvent.type = "OPERATOR_NOTIFICATION";
-                    newEvent.description = "Suspiciousness: " + v.theSuspiciousness.notifyOperator.toString() 
-                            + "(> " + theOptions.notificationThreshold.toString() + ")" ;
+                    newEvent.value = v.theSuspiciousness.notifyOperator;
+                    newEvent.description = "Probability notify: " + v.theSuspiciousness.notifyOperator.toString();
                 }
             }
         }
