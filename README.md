@@ -28,3 +28,7 @@ The program requires the following libraries:
 * [MySQL JDBC Driver](http://dev.mysql.com/downloads/connector/j/) - for access to database with AIS information
 * [PostgreSQL JDBC Driver](http://jdbc.postgresql.org/) - for access to geospatial database
 * [Joda-Time](http://www.joda.org/joda-time/) - for time modeling in Java
+
+License
+-------
+This program without its dependencies and its source code are released under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
