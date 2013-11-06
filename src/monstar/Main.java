@@ -43,7 +43,7 @@ public class Main {
         OP = new OperationalPicture();
         
         if (!onlineMode) {
-            scen = setScenario(OP,1);        
+            scen = setScenario(OP,3);        
         
             loopTime = scen.startTime;
             stepTime = 30; //in seconds
@@ -107,7 +107,7 @@ public class Main {
         switch (vessel){
             case 1: 
                 //MV Nestor
-                scen.logFileName = "MonSTAR_Log_NestorFull.csv";
+                scen.logFileName = "MonSTAR_Log_Nestor.csv";
                 scen.mmsi = 244688000;
                 scen.startTime = new DateTime(2013,04,27,16,50,0); 
                 scen.endTime = new DateTime(2013,04,28,4,35,0);
@@ -116,14 +116,41 @@ public class Main {
                 break;
             case 2:
                 //Karelia
-                scen.logFileName = "MonSTAR_Log_KareliaFull.csv";
+                scen.logFileName = "MonSTAR_Log_Karelia.csv";
                 scen.mmsi = 370039000;
                 scen.startTime = new DateTime(2013,04,23,10,30,0); 
                 scen.endTime = new DateTime(2013,04,23,20,40,0);
                 OP.theOptions.filterVessel = true;
                 OP.theOptions.filterMMSI = scen.mmsi;
                 break;
-        
+           case 3:
+                //Island Earl
+                scen.logFileName = "MonSTAR_Log_IslandEarl.csv";
+                scen.mmsi = 259271000;
+                scen.startTime = new DateTime(2013,04,12,9,50,0); 
+                scen.endTime = new DateTime(2013,04,28,4,30,0);
+                OP.theOptions.filterVessel = true;
+                OP.theOptions.filterMMSI = scen.mmsi;
+                break;        
+            case 4:
+                //Arie Senior
+                scen.logFileName = "MonSTAR_Log_ArieSenior.csv";
+                scen.mmsi = 244060000;
+                scen.startTime = new DateTime(2013,04,12,11,25,0); 
+                scen.endTime = new DateTime(2013,04,28,4,30,0);
+                OP.theOptions.filterVessel = true;
+                OP.theOptions.filterMMSI = scen.mmsi;
+                break;                   
+            case 5:
+                //Spiegelgracht
+                scen.logFileName = "MonSTAR_Log_Spiegelgracht.csv";
+                scen.mmsi = 245789000;
+                scen.startTime = new DateTime(2013,04,14,22,00,0); 
+                scen.endTime = new DateTime(2013,04,17,4,10,0);
+                OP.theOptions.filterVessel = true;
+                OP.theOptions.filterMMSI = scen.mmsi;
+                break;
+
             default:
                 scen.logFileName = "MonSTAR_Log_AllFull.csv";
                 scen.startTime = new DateTime(2013,04,27,16,30,0); 
