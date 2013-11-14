@@ -301,9 +301,15 @@ public class OperationalPicture {
         
     String getVesselAlert(Vessel v){
         String message = "";
+        Double AISalert = 0d;
+        Double TrafficViolation = 0d;
         
-        message += v.theAlerts.trafficRuleViolation.toString() + ";" + 
-                v.theAlerts.aisAlert.toString() + ";";
+        if (v.theAlerts.aisAlert) AISalert  = 1.0d;
+        if (v.theAlerts.trafficRuleViolation) TrafficViolation  = 1.0d;
+        
+        
+        message += TrafficViolation.toString() + ";" + 
+                AISalert.toString() + ";";
         
         return message;
     }

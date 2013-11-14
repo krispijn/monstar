@@ -156,6 +156,9 @@ public class Hypotheses {
             Double pCourse = 2*(theDistCourse.cumulativeProbability(parentVessel.theFeatures.course)-0.5); 
             Double pSpeed = 2*(theDistSpeed.cumulativeProbability(parentVessel.theFeatures.speed)-0.5); 
             
+            if (pSpeed < 0) pSpeed = 0d;
+            if (pCourse < 0) pCourse = 0d;
+            
             //Determine probabilities; select the maximum.
             retVal = Math.max(pCourse, pSpeed);
         }
@@ -215,7 +218,7 @@ public class Hypotheses {
         Boolean classSpecific = false;
         
         //Determine if stopped
-        if (parentVessel.theFeatures.speed < speedThreshold){
+        if (parentVessel.theFeatures.speed < speedThreshold && parentVessel.theFeatures.navState != 5){
             //Determine if at location where ships stop (based on all vessel and own class data)
             String classString = MonstarUtility.getClassString(parentVessel.shiptype);
             Integer dataType = checkGISDBdata(classString);
@@ -322,7 +325,7 @@ public class Hypotheses {
             rasterID = this.parentVessel.parentOP.theOptions.findRasterID(parentVessel.theFeatures.lon, parentVessel.theFeatures.lat);
             
             qry = "SELECT rid, ST_Value(rast, foo.pt_geom) As bp1val " +
-                        "FROM public." + tableName + "CROSS JOIN " + 
+                        "FROM public." + tableName + " CROSS JOIN " + 
                         "(SELECT ST_SetSRID(ST_Point(" + parentVessel.theFeatures.lon.toString() + 
                         "," + parentVessel.theFeatures.lat.toString() + "), 4236) As pt_geom) As foo " +
                         "WHERE rid=" + rasterID.toString() + " ORDER BY bp1val ASC;";

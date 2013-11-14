@@ -43,7 +43,7 @@ public class Main {
         OP = new OperationalPicture();
         
         if (!onlineMode) {
-            scen = setScenario(OP,4);        
+            scen = setScenario(OP,5);        
         
             loopTime = scen.startTime;
             stepTime = 30; //in seconds
@@ -53,7 +53,7 @@ public class Main {
             OP.theOptions.logFileName = scen.logFileName;
 
             while (loopTime.isBefore(scen.endTime)){
-                    //System.out.println("Looptime: " + loopTime.toString());
+                    System.out.println("Looptime: " + loopTime.toString());
                     OP.update(loopTime);
                     loopTime = loopTime.plusSeconds(stepTime);
             }
