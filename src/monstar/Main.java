@@ -43,7 +43,7 @@ public class Main {
         OP = new OperationalPicture();
         
         if (!onlineMode) {
-            scen = setScenario(OP,1);        
+            scen = setScenario(OP,0);        
         
             loopTime = scen.startTime;
             stepTime = 30; //in seconds

@@ -144,7 +144,7 @@ public class Hypotheses {
 
             normalCourse = getValueFromGISDB(classString,1,specificClass);   
             //normalCourseVariance = getValueFromGISDB(classString,2,specificClass);
-            normalCourseVariance = 15d;
+            normalCourseVariance = 30d;
             
             normalSpeed = getValueFromGISDB(classString,3,specificClass);         
             //normalSpeedVariance = getValueFromGISDB(classString,4,specificClass);

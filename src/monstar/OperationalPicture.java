@@ -133,28 +133,34 @@ public class OperationalPicture {
         if (noMessages > 0) {
             do {
                 DateTime timeStamp;
-                Double lat, lon, cog, sog;
+                Double theLon, theLat, lat, lon, cog, sog;
                 Integer navStatus, theMMSI;
                 String msgDate, msgTime;
 
-                theMMSI = newMessages.getInt("mmsi");
+                theLat = newMessages.getDouble("latitude");
+                theLon = newMessages.getDouble("longtitude"); //don't ask
+                
+                if (theLon > 3.0 && theLon < 6.0){
+                    if (theLat > 51.5 && theLat < 54.5){
+                        theMMSI = newMessages.getInt("mmsi");
 
-                Vessel myVessel = addVessel(theMMSI, theVessels);
+                        Vessel myVessel = addVessel(theMMSI, theVessels);
 
-                msgDate = newMessages.getDate("date").toString();
-                msgTime = newMessages.getTime("time").toString();
+                        msgDate = newMessages.getDate("date").toString();
+                        msgTime = newMessages.getTime("time").toString();
 
-                timeStamp = parseDBDateTime(msgDate,msgTime);
+                        timeStamp = parseDBDateTime(msgDate,msgTime);
 
-                PositionReport newPoint = myVessel.theTrackBuffer.addPoint(timeStamp);
+                        PositionReport newPoint = myVessel.theTrackBuffer.addPoint(timeStamp);
 
-                newPoint.latitude = newMessages.getDouble("latitude");
-                newPoint.longitude = newMessages.getDouble("longtitude"); //don't ask
-                newPoint.cog = newMessages.getDouble("cog");
-                newPoint.sog = newMessages.getDouble("sog");
-                newPoint.navigationStatus = newMessages.getInt("navigation_status");
-                newPoint.rot = newMessages.getInt("rot");
-
+                        newPoint.latitude = newMessages.getDouble("latitude");
+                        newPoint.longitude = newMessages.getDouble("longtitude"); //don't ask
+                        newPoint.cog = newMessages.getDouble("cog");
+                        newPoint.sog = newMessages.getDouble("sog");
+                        newPoint.navigationStatus = newMessages.getInt("navigation_status");
+                        newPoint.rot = newMessages.getInt("rot");
+                    }
+                }
             } while(newMessages.next());
         }
         
