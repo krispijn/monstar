@@ -43,30 +43,30 @@ public class Main {
         OP = new OperationalPicture();
         
         if (!onlineMode) {
-            scen = setScenario(OP,3);        
+            scen = setScenario(OP,4);        
         
             loopTime = scen.startTime;
             stepTime = 30; //in seconds
 
             //Set these for logging to file of results
-            OP.theOptions.logToFile = false;
+            OP.theOptions.logToFile = true;
             OP.theOptions.logFileName = scen.logFileName;
 
             while (loopTime.isBefore(scen.endTime)){
-                    System.out.println("Looptime: " + loopTime.toString());
+                    //System.out.println("Looptime: " + loopTime.toString());
                     OP.update(loopTime);
                     loopTime = loopTime.plusSeconds(stepTime);
             }
 
             //output events
-            for (Vessel v : OP.theVessels){
-                for (Event e : v.theEvents){
-                    String message = v.name + ", " + v.mmsi.toString() + " - ";
-                    message += e.time.toString() + ": ";
-                    message += e.type + " - " + e.description;
-                    System.out.println( message );
-                }        
-            }
+//            for (Vessel v : OP.theVessels){
+//                for (Event e : v.theEvents){
+//                    String message = v.name + ", " + v.mmsi.toString() + " - ";
+//                    message += e.time.toString() + ": ";
+//                    message += e.type + " - " + e.description;
+//                    System.out.println( message );
+//                }        
+//            }
         }
         else {
             //online mode. Here we process the 'live' data using the logging 

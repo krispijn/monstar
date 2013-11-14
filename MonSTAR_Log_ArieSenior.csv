@@ -1,0 +1,1 @@
+time;mmsi;name;country;shiptype;navState;course;deltaCourse;speed;deltaSpeed;lat;lon;aisOff;classAtypical;intentIntrusionROI;leavingTSS;uTurn;unexpectedStop;level;notifyOp;trafficViolation;AISalert;

@@ -46,6 +46,8 @@ public class OperationalPicture {
     OperationalPicture(){
         theOptions = new Options();     
         theVessels = new ArrayList<Vessel>();
+        
+        theOptions.buildRasterMap();
     }
     
             
@@ -222,14 +224,14 @@ public class OperationalPicture {
         if (writeHeader){
             String headerStr = "";
             headerStr += "time;" + getVesselDetailsHeader() + getFeatureHeader() +
-                    getHypothesesHeader() + getVesselSuspicionHeader() + "\n";
+                    getHypothesesHeader() + getVesselSuspicionHeader() + getVesselAlertHeader() + "\n";
             writer.write(headerStr);
         }
         
         
         for (Vessel v: theVessels){
                 String outputStr = getVesselDetails(v) + getFeatureState(v) 
-                        + getHypothesesState(v) + getVesselSuspicion(v);
+                        + getHypothesesState(v) + getVesselSuspicion(v) + getVesselAlert(v);
                 outputStr = clock.toString() + ";" + outputStr + "\n";
                 writer.write(outputStr);
         }
@@ -295,6 +297,18 @@ public class OperationalPicture {
     }
     String getVesselSuspicionHeader(){
         return "level;notifyOp;";
+    }
+        
+    String getVesselAlert(Vessel v){
+        String message = "";
+        
+        message += v.theAlerts.trafficRuleViolation.toString() + ";" + 
+                v.theAlerts.aisAlert.toString() + ";";
+        
+        return message;
+    }
+    String getVesselAlertHeader(){
+        return "trafficViolation;AISalert;";
     }
 }
 

@@ -263,6 +263,7 @@ public class Hypotheses {
         String qry;
         ResultSet rst;
         
+        Integer rasterID;
         //Retrieve the values for course, speed and shipping density
         try{  
             Class.forName("org.postgresql.Driver");
@@ -298,30 +299,33 @@ public class Hypotheses {
                 //for all
                 switch(valueType){
                     case 1:
-                        tableName = "course";
+                        tableName = "course_cAll";
                         break;
                     case 2:
-                        tableName = "courseVar";
+                        tableName = "courseVar_cAll";
                         break;
                     case 3:
-                        tableName = "speed";
+                        tableName = "speed_cAll";
                         break;
                     case 4:
-                        tableName = "speedVar";
+                        tableName = "speedVar_cAll";
                         break;
                     case 5:
-                        tableName = "shippingdensity";
+                        tableName = "shippingdensity_cAll";
                         break;
                     default:
                         return retVal;
                 }   
             }
             
+            
+            rasterID = this.parentVessel.parentOP.theOptions.findRasterID(parentVessel.theFeatures.lon, parentVessel.theFeatures.lat);
+            
             qry = "SELECT rid, ST_Value(rast, foo.pt_geom) As bp1val " +
                         "FROM public." + tableName + "CROSS JOIN " + 
-                        "(SELECT ST_SetSRID(ST_Point(" + parentVessel.theFeatures.lat.toString() + 
-                        "," + parentVessel.theFeatures.lon.toString() + "), 4236) As pt_geom) As foo " +
-                        "ORDER BY bp1val ASC;";
+                        "(SELECT ST_SetSRID(ST_Point(" + parentVessel.theFeatures.lon.toString() + 
+                        "," + parentVessel.theFeatures.lat.toString() + "), 4236) As pt_geom) As foo " +
+                        "WHERE rid=" + rasterID.toString() + " ORDER BY bp1val ASC;";
       
             rst = stmt.executeQuery(qry);
             rst.next();
@@ -345,7 +349,7 @@ public class Hypotheses {
         
         allShippingDensity = getValueFromGISDB("all",5,false);
     
-        if (!Double.isNaN(allShippingDensity) || allShippingDensity > 1e-16){
+        if (!Double.isNaN(allShippingDensity) && allShippingDensity > 1e-16){
             //we have data on this grid cell: test if we have class data on this cell
             //get class string
             retVal = 1;

@@ -15,6 +15,13 @@
  */
 package monstar;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import org.joda.time.Duration;
 /**
  * This class contains 'global' options. They belong to the Operational Picture
@@ -50,6 +57,12 @@ public class Options {
     
     Boolean intermediateEvents; //create event objects for stuff other than ais alerts and notifications
     
+    //Quick fix for indexing rasters (flag: dirty, needs evaluation)
+    Map<Integer, Double> theRasterMinLat = new HashMap<>();
+    Map<Integer, Double> theRasterMaxLat = new HashMap<>();
+    Map<Integer, Double> theRasterMinLon = new HashMap<>();
+    Map<Integer, Double> theRasterMaxLon = new HashMap<>();
+    
     Options(){
         stepTime = 30;
         slidingWindowSize = 120;
@@ -80,5 +93,58 @@ public class Options {
         filterMMSI = 0;
         
         intermediateEvents = true;
+    }
+    
+    public void buildRasterMap() {
+        
+        URL theRasterFile = getClass().getResource("/assests/RasterIDmap.csv");
+        
+        String csvFile = theRasterFile.getPath().substring(1);
+	BufferedReader br = null;
+	String line = "";
+	String cvsSplitBy = ";";
+ 
+	try {
+		br = new BufferedReader(new FileReader(csvFile));
+		while ((line = br.readLine()) != null) {
+ 
+			// use comma as separator
+			String[] raster = line.split(cvsSplitBy);
+                        if (!raster[0].equals("\"rid\"")){
+                            theRasterMinLat.put(Integer.parseInt(raster[0]),Double.parseDouble(raster[4]));
+                            theRasterMaxLat.put(Integer.parseInt(raster[0]),Double.parseDouble(raster[2]));
+                            theRasterMinLon.put(Integer.parseInt(raster[0]),Double.parseDouble(raster[1]));
+                            theRasterMaxLon.put(Integer.parseInt(raster[0]),Double.parseDouble(raster[3]));
+                        }
+ 
+		}
+
+ 
+	} catch (IOException e) {
+		e.printStackTrace();
+	}         
+        
+        //TEST
+//        Integer ID = findRasterID(4.7d, 52.95d);
+//        System.out.println("ID = " + ID.toString());
+    }
+    
+    public Integer findRasterID(Double lon,Double lat){
+        Integer retVal = 0;
+        
+        for (Map.Entry<Integer, Double> entry : theRasterMinLat.entrySet()){
+            Integer theID = entry.getKey();
+            
+            Double minLat = theRasterMinLat.get(theID);
+            Double maxLat = theRasterMaxLat.get(theID);
+            Double minLon = theRasterMinLon.get(theID);
+            Double maxLon = theRasterMaxLon.get(theID);
+            
+            if (lat > minLat && lat <= maxLat){
+                    if (lon > minLon && lon <= maxLon)  return  theID;
+            }
+        }
+            
+        return retVal;
     }
 }
