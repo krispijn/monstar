@@ -142,10 +142,13 @@ public class Hypotheses {
                 specificClass = true;
             }         
 
-            normalCourse = getValueFromGISDB(classString,1,specificClass);
-            normalCourseVariance = getValueFromGISDB(classString,2,specificClass);
-            normalSpeed = getValueFromGISDB(classString,3,specificClass);
-            normalSpeedVariance = getValueFromGISDB(classString,4,specificClass);
+            normalCourse = getValueFromGISDB(classString,1,specificClass);   
+            //normalCourseVariance = getValueFromGISDB(classString,2,specificClass);
+            normalCourseVariance = 15d;
+            
+            normalSpeed = getValueFromGISDB(classString,3,specificClass);         
+            //normalSpeedVariance = getValueFromGISDB(classString,4,specificClass);
+            normalSpeedVariance = 0.5*normalSpeed;
             
             //Use the retrieved values as parameters for a Normal distribution   
             NormalDistribution theDistCourse  = new NormalDistribution(normalCourse,normalCourseVariance);
@@ -153,8 +156,8 @@ public class Hypotheses {
             
             // get the value of the probability under the normal distribution. Note that we need to multiply this
             // by 2 as we use only one half of the curve.
-            Double pCourse = 2*(theDistCourse.cumulativeProbability(parentVessel.theFeatures.course)-0.5); 
-            Double pSpeed = 2*(theDistSpeed.cumulativeProbability(parentVessel.theFeatures.speed)-0.5); 
+            Double pCourse = 2*Math.abs((theDistCourse.cumulativeProbability(parentVessel.theFeatures.course)-0.5)); 
+            Double pSpeed = 2*Math.abs((theDistSpeed.cumulativeProbability(parentVessel.theFeatures.speed)-0.5)); 
             
             if (pSpeed < 0) pSpeed = 0d;
             if (pCourse < 0) pCourse = 0d;
@@ -334,6 +337,11 @@ public class Hypotheses {
             rst.next();
 
             retVal = rst.getDouble("bp1val");
+            
+            rst.close();
+            stmt.close();
+            con.close();
+            
         }
         catch (Exception e){
             //nothing
