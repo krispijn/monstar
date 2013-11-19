@@ -51,6 +51,7 @@ public class Options {
     
     Boolean logToFile;
     String logFileName;
+    String logFileDir;
     
     Boolean filterVessel;
     Integer filterMMSI;
@@ -65,7 +66,7 @@ public class Options {
     
     Options(){
         stepTime = 30;
-        slidingWindowSize = 120;
+        slidingWindowSize = 240;
         
         //set options for AIS log database 
         dbAISURL = "jdbc:mysql://localhost:3306/log_ais?zeroDateTimeBehavior=convertToNull";
@@ -88,6 +89,7 @@ public class Options {
         
         logToFile = false;
         logFileName = "";
+        logFileDir = "C:\\Research\\Data\\AIS\\Loggings\\MonSTARoutput\\";
         
         filterVessel = false;
         filterMMSI = 0;

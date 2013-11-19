@@ -73,7 +73,7 @@ public class OperationalPicture {
             }
         }
         // if specified, dump relevant data to text file (e.g. for analysis and pretty plots)
-        if (theOptions.logToFile) DumpStateToFile(theOptions.logFileName);    
+        if (theOptions.logToFile) DumpStateToFile(theOptions.logFileDir + theOptions.logFileName);    
     }
     
     void getNewMessages(DateTime loopTime) throws Exception{

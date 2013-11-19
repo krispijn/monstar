@@ -43,7 +43,7 @@ public class Main {
         OP = new OperationalPicture();
         
         if (!onlineMode) {
-            scen = setScenario(OP,0);        
+            scen = setScenario(OP,2);        
         
             loopTime = scen.startTime;
             stepTime = 30; //in seconds
@@ -55,6 +55,8 @@ public class Main {
             while (loopTime.isBefore(scen.endTime)){
                     System.out.println("Looptime: " + loopTime.toString());
                     OP.update(loopTime);
+                    sleep(10);  //wait just a few milliseconds for the database connections to free up 
+                                //(only necessary if performance issues arise)
                     loopTime = loopTime.plusSeconds(stepTime);
             }
 

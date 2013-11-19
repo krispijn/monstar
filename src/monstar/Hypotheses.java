@@ -120,6 +120,7 @@ public class Hypotheses {
         
         Double retVal = 0d;
         Double normalCourse, normalSpeed, normalCourseVariance, normalSpeedVariance;
+        Double courseVarOffset, speedVarOffset; //threshold offsets
         Double allShippingDensity, classShippingDensity;  
         Integer databaseCheck;
         String classString;
@@ -143,12 +144,17 @@ public class Hypotheses {
             }         
 
             normalCourse = getValueFromGISDB(classString,1,specificClass);   
-            //normalCourseVariance = getValueFromGISDB(classString,2,specificClass);
-            normalCourseVariance = 30d;
+            normalCourseVariance = getValueFromGISDB(classString,2,specificClass);
+            courseVarOffset = 30d;
+            
             
             normalSpeed = getValueFromGISDB(classString,3,specificClass);         
-            //normalSpeedVariance = getValueFromGISDB(classString,4,specificClass);
-            normalSpeedVariance = 0.5*normalSpeed;
+            normalSpeedVariance = getValueFromGISDB(classString,4,specificClass);
+            speedVarOffset = 0.5*normalSpeed;
+            
+            //apply offsets
+            normalCourseVariance += courseVarOffset;
+            normalSpeedVariance += speedVarOffset;
             
             //Use the retrieved values as parameters for a Normal distribution   
             NormalDistribution theDistCourse  = new NormalDistribution(normalCourse,normalCourseVariance);
